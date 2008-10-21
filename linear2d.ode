@@ -1,0 +1,14 @@
+# linear2d.ode
+#
+# right hand side
+dx/dt=a*x+b*y
+dy/dt=c*x+d*y
+#
+# parameters
+par a=0,b=1,c=-1,d=0
+#
+# init cond
+init x=1,y=0
+#
+# we're done
+done
