@@ -1,13 +1,13 @@
 #!/usr/bin/python
 # mod2sbml.py
 
-# Updated: 4/11/08
+# Updated: 8/6/07
 
 import libsbml,sys,re,cStringIO
 
-__doc__="""mod2sbml version 2.3.1.2
+__doc__="""mod2sbml version 2.3.1.1
 
-Copyright (C) 2005-2008, Darren J Wilkinson
+Copyright (C) 2005-2007, Darren J Wilkinson
  d.j.wilkinson@ncl.ac.uk
  http://www.staff.ncl.ac.uk/d.j.wilkinson/
 
@@ -302,7 +302,7 @@ object"""
 
     def handleRules(self,line,name):
         # expect either a rule or a new section
-        # rules are fixed as type AssignmentRule
+        # in v.2.2.0, rules are fixed as type AssignmentRule
         # this requires the assigned species to have atrribute
         # constant set to "False"
         if (line[0]=="@"):
@@ -314,9 +314,15 @@ object"""
                 sys.stderr.write(str(self.count)+'\n')
                 raise ParseError
             (lhs,rhs)=bits
-            value=libsbml.parseFormula(rhs)
-            self.replaceTime(value)
-            self.m.addRule(libsbml.AssignmentRule(lhs,value))
+            # set assigned species 'constant' attribute to 'False'
+            p = self.m.getParameter(lhs)
+            if (p):
+                p.setConstant(False)
+            else:
+                s = self.m.getSpecies(lhs)
+                if (s):
+                    s.setConstant(False)
+            self.m.addRule(libsbml.AssignmentRule(lhs,rhs))
             # print self.d.toSBML()
             
     def handleReac1(self,line,name):
@@ -402,6 +408,7 @@ object"""
                         raise ParseError
                     (id,value)=bits
                     kl.addParameter(libsbml.Parameter(id,eval(value)))
+            print "\n\n\n\n\n\n" + kl
             self.r.setKineticLaw(kl)
             self.context=self.REAC1
 
@@ -475,7 +482,7 @@ object"""
 
     def replaceTime(self,ast):
         if (ast.getType()==libsbml.AST_NAME):
-            if ((ast.getName()=='t') or (ast.getName()=='time')):
+            if (ast.getName()=='t'):
                 ast.setType(libsbml.AST_NAME_TIME)
         for node in range(ast.getNumChildren()):
             self.replaceTime(ast.getChild(node))
