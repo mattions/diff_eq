@@ -4,22 +4,22 @@ import numpy
 from matplotlib import rc
 from pylab import *
 
-def hill(x,theta,n):
+def hill(x,K,n):
    """
    return the result of an hill function
-   defined as y = x^n / ( theta^n + x^n )
+   defined as y = x^n / ( K + x^n )
    Parameters:
       x
          point where to calculate the function
-      theta
+      K
          Activation coefficient -- govern the change of the function
       n
          Hill coefficient -- govern the stepness of the Hill function
          
    """
-   y = pow(x, n) / (pow(theta, n) + pow(x, n))
+   y = pow(x, n) / (K + pow(x, n))
 
-   print "Activation coefficient (theta) %d\tStepness coefficient (n) %d" %(theta,n)
+   print "Activation coefficient (K) %d\tStepness coefficient (n) %d" %(K,n)
    return y
    
 def michaelisMenten(x, vMax, Km):
@@ -36,45 +36,51 @@ def michaelisMenten(x, vMax, Km):
    """   
    y = vMax *( x / (Km + x))
    return y
-   
-   
-texOn = True
-rc('text', usetex=texOn)    # Activating Tex. Used in the plot title
-rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
-
-
-x = numpy.arange(0,10,0.1)
 
 def plotHills():
    figure()
-
-   plot(x,hill(x,5,4))
+   K = 5
+   n=2 
+   plot(x,hill(x,K,n))
    if texOn:
-      title(r"Hill's equation: $ y = \frac{x^{n}}{\theta^{n} + x^{n}}$. $n=4$  $\theta=5$", fontsize=16)
+      title_str = r"Hill like equation: $ y = \frac{x^{n}}{K + x^{n}}$. $n="
+      title_str += "%.1f$" %n   
+      title_str += r" $K="
+      title_str += "%.1f$" %K
+      title(title_str, fontsize=16)
 
 
    figure()
-   nList = [0,1,4,5,9]
-   theta = 5
+   nList = [0, 1, 1.5, 2, 2.5, 3, 4]
+   K = 5
 
    for n in nList:
 
-      plot(x,hill(x,theta,n), label=r"$n$ = " + str(n))
+      plot(x,hill(x,K,n), label=r"$n$ = " + str(n))
 
       if texOn:
-         title(r"Hill's equation: $ y = \frac{x^{n}}{\theta^{n} + x^{n}}$. $n$ Variable. $\theta$=" + str(theta), fontsize=16)
+        title_str = r"Hill like equation: $ y = \frac{x^{n}}{K + x^{n}}$. $n="
+        title_str += "variable$"   
+        title_str += r" $K="
+        title_str += "%.1f$" %K
+        title(title_str, fontsize=16)
    legend()
       
-   thetaList = [0,1,4,5,9]
+   KList = [0,1,10,50,90]
    n = 4
 
    figure()
-   for theta in thetaList:
+   for K in KList:
 
-      plot(x,hill(x,theta,n), label=r"$\theta$ = " + str(theta))
+      plot(x,hill(x,K,n), label=r"$K$ = " + str(K))
       
       if texOn:
-         title(r"Hill's equation: $ y = \frac{x^n}{\theta^n + x^n}$. $\theta$ Variable. $n$=" + str(n), fontsize=16)
+        title_str = r"Hill like equation: $ y = \frac{x^{n}}{K + x^{n}}$. $n="
+        title_str += "%.1f$" %n   
+        title_str += r" $K="
+        title_str += "variable$"
+        title(title_str, fontsize=16)
+        
    legend() #drawing the legend
 
 
@@ -92,7 +98,11 @@ def plotMich():
 
 
 if __name__ == "__main__":
-   plotHills()
-   plotMich()
+    texOn = True
+    rc('text', usetex=texOn)    # Activating Tex. Used in the plot title
+    rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+    x = numpy.arange(0,10,0.1)
+    plotHills()
+    plotMich()
 
 show()
