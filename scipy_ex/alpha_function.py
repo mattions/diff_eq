@@ -1,16 +1,16 @@
 # alpha function
-from pylab import *
-import numpy
-from matplotlib import rc
 
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib
+from numpy import exp
 
-rc('text', usetex=True)    # Activating Tex. Used in the plot title
-rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+matplotlib.rc('text', usetex=True)    # Activating Tex. Used in the plot title
+matplotlib.rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 
-
-t = numpy.arange(0, 1000, 0.1)
+t = np.linspace(0, 1000)
 t0 = 10
-taus = numpy.arange(100, 1000, 100)
+taus = np.arange(100, 1000, 100)
 
 g_syns = []
 for tau in taus:
@@ -19,8 +19,8 @@ for tau in taus:
    g_syns.append(g_syn)
 
 for g_syn in g_syns:
-  plot(t, g_syn)
+    plt.plot(t, g_syn)
   
-title(r"Alpha Function: g_{syn} = \frac{(t-t_0)}{\tau} exp(\frac{t-t_o}{\tau})", fontsize=16)
-  
-show()
+plt.title(r"Alpha Function: g_{syn} = \frac{(t-t_0)}{\tau} exp(\frac{t-t_o}{\tau})", fontsize=16)
+plt.savefig('alpha_function.png')
+plt.show()
