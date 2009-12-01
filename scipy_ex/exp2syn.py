@@ -1,9 +1,11 @@
 # Exp2Syn. To see how it is plotted
 
-from pylab import *
-import numpy
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib
+from numpy import exp
 
-t = numpy.arange(0,100,0.1)
+t = np.linspace(0,100, num=1000)
 
 tau1 = 9
 tau2 = 10
@@ -15,18 +17,7 @@ def exp2syn(t, tau1, tau2, weight):
    return g
    
 g = exp2syn(t, tau1, tau2, weight)   
-plot(t, g, label="conductance")
-
-voltage = numpy.arange(-120, 31, 1)
-e = -65
-
-
-i = numpy.zeros(len(voltage))
-
-i = (voltage - e)
-
-#figure()
-#plot(voltage,i, label="intensity")
-
-show()
+plt.plot(t, g, label="conductance")
+plt.savefig('exp2syn.png')
+plt.show()
 
