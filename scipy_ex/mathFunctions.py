@@ -7,7 +7,7 @@ from pylab import *
 def hill(x,K,n):
    """
    return the result of an hill function
-   defined as y = x^n / ( K + x^n )
+   defined as y = x^n / ( K^n + x^n )
    Parameters:
       x
          point where to calculate the function
@@ -17,7 +17,7 @@ def hill(x,K,n):
          Hill coefficient -- govern the stepness of the Hill function
          
    """
-   y = pow(x, n) / (K + pow(x, n))
+   y = pow(x, n) / (pow(K, n) + pow(x, n))
 
    print "Activation coefficient (K) %d\tStepness coefficient (n) %d" %(K,n)
    return y
@@ -43,7 +43,7 @@ def plotHills():
    n=2 
    plot(x,hill(x,K,n))
    if texOn:
-      title_str = r"Hill like equation: $ y = \frac{x^{n}}{K + x^{n}}$. $n="
+      title_str = r"Hill like equation: $ y = \frac{x^{n}}{K^{n} + x^{n}}$. $n="
       title_str += "%.1f$" %n   
       title_str += r" $K="
       title_str += "%.1f$" %K
@@ -51,7 +51,7 @@ def plotHills():
 
 
    figure()
-   nList = [0, 1, 1.5, 2, 2.5, 3, 4]
+   nList = [1, 1.5, 2, 2.5, 3, 4]
    K = 5
 
    for n in nList:
@@ -59,15 +59,15 @@ def plotHills():
       plot(x,hill(x,K,n), label=r"$n$ = " + str(n))
 
       if texOn:
-        title_str = r"Hill like equation: $ y = \frac{x^{n}}{K + x^{n}}$. $n="
+        title_str = r"Hill like equation: $ y = \frac{x^{n}}{K^{n} + x^{n}}$. $n="
         title_str += "variable$"   
         title_str += r" $K="
         title_str += "%.1f$" %K
         title(title_str, fontsize=16)
    legend()
       
-   KList = [0,1,10,50,90]
-   n = 4
+   KList = [0,1,10,50,90, 100, 1000, 2000]
+   n = 3
 
    figure()
    for K in KList:
@@ -75,7 +75,7 @@ def plotHills():
       plot(x,hill(x,K,n), label=r"$K$ = " + str(K))
       
       if texOn:
-        title_str = r"Hill like equation: $ y = \frac{x^{n}}{K + x^{n}}$. $n="
+        title_str = r"Hill like equation: $ y = \frac{x^{n}}{K^{n} + x^{n}}$. $n="
         title_str += "%.1f$" %n   
         title_str += r" $K="
         title_str += "variable$"
@@ -101,7 +101,7 @@ if __name__ == "__main__":
     texOn = True
     rc('text', usetex=texOn)    # Activating Tex. Used in the plot title
     rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
-    x = numpy.arange(0,10,0.1)
+    x = numpy.linspace(0,1)
     plotHills()
     plotMich()
 
